@@ -12,10 +12,17 @@ const handleCategory = async () => {
 };
 const handleLoad = async (categoryId) => {
     const response = await fetch(`https://openapi.programming-hero.com/api/videos/category/${categoryId}`);
-    const data = await response.json();
+    const videos = await response.json();
     const cardContainer = document.getElementById("card-container");
     cardContainer.innerHTML = "";
-    data.data.forEach((videos) => 
+    const errorMessage = document.getElementById('error-Message');
+ if(videos.data.length === 0) {
+errorMessage.classList.remove('hidden');
+ }
+ else{
+    errorMessage.classList.add('hidden');
+ }
+    videos.data.forEach((videos) => 
     {const div = document.createElement("div");
     div.innerHTML = `
     <div class="card w-[290px] h-[220px] bg-gray-100">
@@ -42,8 +49,8 @@ const handleLoad = async (categoryId) => {
 
       </div>
     </div> 
-    `
-    cardContainer.appendChild(div);
+`
+cardContainer.appendChild(div);
  });
 };
 handleCategory();
